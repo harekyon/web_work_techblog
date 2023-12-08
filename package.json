@@ -1,0 +1,32 @@
+{
+  "name": "techblog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start",
+    "export": "next export",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@react-hook/event": "^1.2.6",
+    "axios": "^1.6.2",
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.4",
+    "highlight.js": "^11.7.0",
+    "i": "^0.3.7",
+    "jotai": "^2.2.2",
+    "jotai-location": "^0.5.1",
+    "microcms-js-sdk": "^2.3.3",
+    "next": "13.2.4",
+    "npm": "^9.6.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "sass": "^1.59.3"
+  }
+}

@@ -1,0 +1,27 @@
+@import "../styles/_var";
+.footer {
+  &-bg {
+    width: 100%;
+    height: 100px;
+    background: #101929cc;
+    @include flexCenter();
+  }
+  &--wrap {
+    width: 100%;
+    max-width: 1000px;
+    @include flexCenter();
+    // justify-content: space-between;
+    padding: 0 16px;
+  }
+  &__logo {
+    @include font(40, 1, 0.05, 800);
+    font-family: "din-2014", sans-serif;
+    font-style: normal;
+  }
+  &__copy {
+    opacity: 0.5;
+    @include font(12, 1, 0.05, 100);
+    font-family: "din-2014", sans-serif;
+    font-style: normal;
+  }
+}

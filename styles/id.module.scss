@@ -1,0 +1,30 @@
+.main {
+  width: 100%;
+  min-height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+  &--wrap {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+  }
+  &--card-list {
+    // min-height: 100vh;
+    flex-grow: 3;
+    padding: 20px;
+  }
+  &--side {
+    // min-height: 100vh;
+    flex-grow: 1;
+    // background: red;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main {
+    column-gap: 0px;
+  }
+}

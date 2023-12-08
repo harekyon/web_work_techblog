@@ -1,0 +1,22 @@
+@import "../../styles/_var";
+
+.field-side {
+  &--wrap {
+    width: 200px;
+    min-width: 200px;
+    background: #11212c75;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: 20px;
+  }
+}
+
+//sp
+@include mq(sp) {
+  .field-side {
+    &--wrap {
+      display: none;
+    }
+  }
+}

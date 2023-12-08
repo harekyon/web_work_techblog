@@ -1,0 +1,83 @@
+@import "/styles/__var.scss";
+
+.main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &--wrap {
+    width: 100%;
+    height: 600px;
+    // background: red;
+    @include flexCenter();
+    column-gap: 30px;
+    justify-content: flex-start;
+    padding-left: 80px;
+    padding-right: 80px;
+    overflow-x: scroll;
+    // transition: 0.2s;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  & &--card-list {
+    flex-grow: 3;
+    padding: 20px;
+  }
+  &--side {
+    flex-grow: 1;
+  }
+}
+.nav {
+  &--wrap {
+    width: 180px;
+    height: 100%;
+    flex-shrink: 0;
+    // background: brown;
+  }
+  &__title {
+    width: 100%;
+    @include flexCenter();
+    justify-content: flex-start;
+    margin-top: 10px;
+    svg {
+      width: 140px;
+    }
+  }
+  &--menu {
+    margin-top: 30px;
+    li {
+      list-style: none;
+      a {
+        width: 100%;
+        display: inline-block;
+        font-family: "vox-round", sans-serif;
+      }
+    }
+  }
+}
+.section1 {
+  width: auto;
+  height: 100%;
+  // background: blue;
+  flex-shrink: 0;
+}
+
+@include mq(pc) {
+  .nav--menu {
+    a:hover {
+      background: #ffffff33;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .main {
+    column-gap: 0px;
+  }
+}

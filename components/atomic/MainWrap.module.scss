@@ -1,0 +1,22 @@
+@import "../../styles/_var";
+
+.main {
+  &--wrap {
+    width: 100%;
+    max-width: 1200px;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    margin: 0 auto;
+    padding: 20px;
+    column-gap: 10px;
+  }
+}
+
+//sp
+@include mq(sp) {
+  .main {
+    &--wrap {
+      width: 100%;
+    }
+  }
+}

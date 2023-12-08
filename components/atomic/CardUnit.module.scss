@@ -1,0 +1,59 @@
+@import "../../styles/_var";
+
+.card-unit {
+  &--wrap {
+    background: #ffffff55;
+    opacity: 0;
+    transition-duration: 0.2s;
+    @include mq(pc) {
+      &:hover {
+        background: #fffbd355;
+        .card-unit__date {
+          background: #fffbd355;
+        }
+        .card-unit__category {
+          background: #fffbd355;
+        }
+      }
+    }
+  }
+  &--flex-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  &__date,
+  &__category {
+    background: $c-pre1;
+    position: absolute;
+    top: 0;
+    @include font(10, 1.6, 0.05, 700);
+    padding: 1px 5px;
+  }
+  &__category {
+    right: 0;
+  }
+  &__thumbnail {
+    width: 100%;
+    height: auto;
+    vertical-align: bottom;
+    position: relative;
+    z-index: -1;
+  }
+  &__title {
+    width: 100%;
+    flex-grow: 1;
+    padding: 10px 15px;
+    // background: white;
+    color: white;
+    // background: #ffffff00;
+    // background-image: linear-gradient(180deg, #a2acb600, rgb(96, 98, 107));
+    font-family: "fot-tsukuardgothic-std", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    @include font(14, 1.6, 0.05, 700);
+    text-shadow: 0px 0px 10px #000000;
+  }
+}

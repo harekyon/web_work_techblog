@@ -1,0 +1,80 @@
+@import "../../styles/_var";
+
+.menu {
+  &--wrap {
+    width: 100%;
+    @include flexCenter();
+    position: relative;
+  }
+  &--position-adjust {
+    @include flexCenter();
+    flex-direction: row;
+    position: absolute;
+    right: 50%;
+    transform: translateX(0px);
+    transition: transform 0.3s ease-in-out;
+  }
+  &--hover-rect {
+    width: 140px;
+    height: 40px;
+    // background: rgb(62, 52, 1, 0.6);
+    position: absolute;
+    left: 0;
+    transition: 0.1s ease-in-out;
+    opacity: 0;
+    transform: scale(1.2);
+    &-stroke {
+      &-tl {
+        width: 2px;
+        height: 2px;
+        border-top: solid 1px white;
+        border-left: solid 1px white;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      &-tr {
+        width: 2px;
+        height: 2px;
+        border-top: solid 1px white;
+        border-right: solid 1px white;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      &-bl {
+        width: 2px;
+        height: 2px;
+        border-bottom: solid 1px white;
+        border-left: solid 1px white;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      &-br {
+        width: 2px;
+        height: 2px;
+        border-bottom: solid 1px white;
+        border-right: solid 1px white;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+}
+
+.menu--position-adjust:hover {
+  transform: translateX(8px);
+  .menu--hover-rect-stroke-tl,
+  .menu--hover-rect-stroke-tr,
+  .menu--hover-rect-stroke-bl,
+  .menu--hover-rect-stroke-br {
+    width: 10px;
+    height: 10px;
+    transition: 0.1s ease-in-out;
+  }
+  .menu--hover-rect-stroke-tl {
+    // transition: 0.1 ease-in-out;
+  }
+}

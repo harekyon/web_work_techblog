@@ -1,0 +1,88 @@
+//fontsの使用例
+
+.tsuku-r {
+  font-family: "fot-tsukuardgothic-std", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.tsuku-b {
+  font-family: "fot-tsukuardgothic-std", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.din-r {
+  font-family: "din-2014", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.din-i {
+  font-family: "din-2014", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.din-b-i {
+  font-family: "din-2014", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+.din-narrow-r {
+  font-family: "din-2014-narrow", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.din-narrow-b {
+  font-family: "din-2014-narrow", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.aki {
+  font-family: "ab-aki", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.barcode {
+  font-family: "Libre Barcode 39", cursive;
+}
+
+.m-plus {
+  font-family: "m-plus-1m", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.vox {
+  font-family: "vox", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  // Vox Italic
+  font-family: "vox", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  // Vox Bold
+  font-family: "vox", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  // Vox Bold Italic
+  font-family: "vox", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  // Vox Round Regular
+  font-family: "vox-round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  // Vox Round Italic
+  font-family: "vox-round", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  // Vox Round Bold
+  font-family: "vox-round", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  // Vox Round Bold Italic
+  font-family: "vox-round", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}

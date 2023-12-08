@@ -1,0 +1,55 @@
+@import "../../styles/_var";
+
+.article-title {
+  &--wrap {
+    @include font(10, 1, 0.05, 400);
+    padding: 4px 0px;
+    margin-bottom: 10px;
+  }
+  &__title {
+    width: 100%;
+    background: white;
+    @include font(32, 1.4, 0.05, 700);
+    font-family: "m-plus-1m", sans-serif;
+    color: $c-pre1;
+    padding: 8px 30px 7px 10px;
+    position: relative;
+    box-shadow: 0px 0px 5px white;
+    &__dot {
+      width: 4px;
+      height: 4px;
+      background: $c-pre1;
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+    }
+  }
+}
+@include mq(sp) {
+  .article-title {
+    &__title {
+      @include font(20, 1.4, 0.05, 700);
+    }
+  }
+}
+
+// &--container {
+//   display: flex;
+//   flex-direction: column;
+//   row-gap: 5px;
+//   border-top: solid 2px white;
+//   padding-top: 10px;
+// }
+// &__date,
+// &__category {
+//   div {
+//     display: inline-block;
+//     width: 80px;
+//     @include font(10, 1, 0.05, 700);
+//     opacity: 0.7;
+//   }
+//   time,
+//   span {
+//     @include font(10, 1, 0.05, 700);
+//   }
+// }

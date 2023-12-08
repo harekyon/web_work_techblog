@@ -1,0 +1,53 @@
+# name: learn-github-actions
+# on: [push]
+# env:
+#   ENVTEST: ${{secrets.ENVTEST}}
+# jobs:
+#   check-bats-version:
+#     runs-on: ubuntu-latest
+#     environment: ${{ inputs.deployment_target }}
+#     steps:
+#       - run: echo "ths is env=${{ env.ENVTEST }}"
+
+name: upload-server-onPush
+on:
+  push:
+    branches: [develop]
+  repository_dispatch:
+    types: [update_post]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install NPM packages
+        run: npm i
+      - name: Build Next.js App
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          SERVICE_DOMAIN: ${{ secrets.SERVICE_DOMAIN }}
+          NEXT_PUBLIC_GA_ID: ${{secrets.NEXT_PUBLIC_GA_ID}}
+          UNIT_API_KEY: ${{secrets.UNIT_API_KEY}}
+          UNIT_SERVICE_DOMAIN: ${{secrets.UNIT_SERVICE_DOMAIN}}
+        run: npm run build
+
+      # - name: Export Next.js app
+      #   run: npm run export
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./out/
+          server-dir: /
+          protocol: ftps

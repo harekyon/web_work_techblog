@@ -1,0 +1,74 @@
+@import "../../styles/_var";
+
+.section-main {
+  &--wrap {
+    width: 100%;
+    @include font(10, 1, 0.05, 400);
+    padding: 20px 30px;
+    position: relative;
+    @include mq(sp) {
+      padding: 15px 15px;
+    }
+  }
+  &__info {
+    &-button {
+      width: 20px;
+      height: 20px;
+      background: white;
+      @include flexCenter();
+      position: absolute;
+      top: #{$paddingArticleVertical}px;
+      right: #{$paddingArticleHorizontal}px;
+      // border: solid 1px white;
+      border-radius: 100%;
+      z-index: 101;
+      span {
+        color: rgb(124, 124, 124);
+        @include font(14, 1, 0.05, 600);
+        pointer-events: none;
+      }
+      &:hover {
+        .section-main__info-modal {
+          // display: block;
+          opacity: 1;
+        }
+      }
+    }
+    &-modal {
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.755);
+      @include flexCenter();
+      flex-direction: column;
+      opacity: 0;
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      z-index: 100;
+      transition: 0.3s;
+      pointer-events: none;
+      &-inner {
+        width: 400px;
+        background: rgba(9, 9, 17, 0.699);
+        border-radius: 10px;
+        padding: 20px 30px;
+        @include mq(sp) {
+          width: 300px;
+        }
+        img {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        p {
+          color: white;
+          @include font(18, 1.5, 0.05, 600);
+          margin-bottom: 4px;
+        }
+        span {
+          color: white;
+          @include font(12, 1.8, 0.05, 400);
+        }
+      }
+    }
+  }
+}

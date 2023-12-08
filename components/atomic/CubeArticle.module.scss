@@ -1,0 +1,190 @@
+/*=====================================*/
+// Cube STYLE
+// Cube作りたい2
+// 全てrectで作ってみる
+/*=====================================*/
+@import "/styles/_var";
+$boxThic: 9px;
+$hoverEffectVal: 4.5px;
+
+.box {
+  &--content {
+    white-space: pre-wrap;
+    position: relative;
+  }
+  &--front {
+    &__surface {
+      background: black;
+      border: solid 1px white;
+      position: absolute;
+      top: -$boxThic/2;
+      right: -$boxThic/2;
+      z-index: 1;
+      transition: 0.2s;
+      overflow: hidden;
+      padding: 30px;
+      &__property1 {
+        position: absolute;
+        top: 18px;
+        left: 15px;
+        @include font(12, 1, 0.05, 400);
+        font-family: "din-2014", sans-serif;
+        opacity: 0.6;
+        padding: 2px 4px;
+        transition: 0.3s;
+      }
+      &__property2 {
+        position: absolute;
+        top: 36px;
+        left: 15px;
+        @include font(12, 1, 0.05, 400);
+        font-family: "din-2014", sans-serif;
+        opacity: 0.6;
+        padding: 2px 4px;
+        transition: 0.3s;
+      }
+      &__title {
+        position: absolute;
+        bottom: 33px;
+        left: 15px;
+        @include font(16, 1, 0.05, 600);
+        font-family: "din-2014", sans-serif;
+        // opacity: 0.6;
+        padding: 2px 4px;
+        transition: 0.3s;
+      }
+      &__sub-title {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        @include font(12, 1, 0.05, 400);
+        font-family: "din-2014", sans-serif;
+        opacity: 0.6;
+        padding: 2px 4px;
+        transition: 0.3s;
+      }
+      &__alpha {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(70deg, #000000ff, #00000000);
+        // opacity: 0.2;
+      }
+      &__img {
+        width: 100%;
+        height: auto;
+      }
+      &__article-title {
+        width: 100%;
+        height: auto;
+        margin-top: 40px;
+        padding: 5px 10px;
+        background: white;
+        @include font(24, 1.4, 0.05, 700);
+        font-family: "din-2014", "m-plus-1m", sans-serif;
+        color: #263947;
+      }
+      &__article-thumb {
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+        background: white;
+        color: black;
+      }
+      &__article-abs {
+        width: 100%;
+        height: auto;
+        margin-top: 0px;
+        padding: 15px 15px;
+        background: white;
+        @include font(12, 1.4, 0.05, 400);
+        font-family: "m-plus-1m", sans-serif;
+        color: #263947;
+      }
+    }
+  }
+  &--side {
+    &__surface {
+      border: solid 1px;
+      border-image-slice: 1;
+      position: absolute;
+      transform-origin: 0% 0%;
+      transition: 0.2s;
+
+      &--left {
+        width: $boxThic;
+        transform: skewy(-45deg);
+        top: $boxThic/2;
+        left: -$boxThic/2;
+        border-image: linear-gradient(
+          to left,
+          #00000000 0%,
+          #00000000 5%,
+          #fff 6%,
+          #d5d5d5 40%,
+          #2f2f2f 100%
+        );
+        border-right-style: hidden;
+        border-bottom-style: hidden;
+        border-image-slice: 1;
+        transition: 0.1s;
+      }
+
+      &--bottom {
+        height: $boxThic;
+        background-clip: padding-box;
+        transform: skewx(-45deg);
+        bottom: -$boxThic/2;
+        right: -$boxThic/2;
+        border-image: linear-gradient(
+          to bottom,
+          #fff 0%,
+          #d5d5d5 40%,
+          #2f2f2f 100%
+        );
+        border-top-style: hidden;
+        border-image-slice: 1;
+        transition: 0.1s;
+      }
+    }
+  }
+}
+@media screen and (min-width: 768px) {
+  a:hover {
+    .box--front__surface {
+      top: -1px;
+      right: -1px;
+      transition: 0.1s;
+    }
+    .box--side__surface--left {
+      width: $boxThic - $hoverEffectVal;
+      transition: 0.1s;
+    }
+    .box--side__surface--bottom {
+      height: $boxThic - $hoverEffectVal;
+      right: -1px;
+      transition: 0.1s;
+    }
+    .box--front__surface__alpha {
+      background: unset;
+    }
+    .box--front__surface__property1 {
+      background: #000011;
+      opacity: 1;
+    }
+    .box--front__surface__property2 {
+      background: #000011;
+      opacity: 1;
+    }
+    .box--front__surface__title {
+      background: #000011;
+      opacity: 1;
+    }
+    .box--front__surface__sub-title {
+      background: #000011;
+      opacity: 1;
+    }
+  }
+}

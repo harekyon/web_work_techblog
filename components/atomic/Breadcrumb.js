@@ -1,13 +1,14 @@
 import { convertDateStringToDate, formatDateDot } from "@/libs/core";
 import styles from "./Breadcrumb.module.scss";
 import { css } from "@emotion/react";
+import Link from "next/link";
 export default function Breadcrumb({ breadcrumb, cssOverrides }) {
   return (
     <div className={styles["breadcrumb--wrap"]} css={cssOverrides}>
       <div className={styles["breadcrumb__bg"]}>
         {breadcrumb.map((b, idx) => {
           return (
-            <a
+            <Link
               href={b.href}
               css={css`
                 background: rgb(
@@ -20,7 +21,7 @@ export default function Breadcrumb({ breadcrumb, cssOverrides }) {
               key={idx}
             >
               <span>{b.name}</span>
-            </a>
+            </Link>
           );
         })}
       </div>

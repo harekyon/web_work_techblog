@@ -151,20 +151,15 @@ export default function BlogId({ data, poppreset }) {
         keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
         url={`https://harekyon.com/${data.id}`}
       />
-
-      <Header></Header>
-      <MainWrap>
-        <FieldMain data={data}>
-          <SectionTitle>ARTICLE</SectionTitle>
-          <SectionMain>
-            <ArticleProperty data={data}></ArticleProperty>
-            <ArticleTitle>{data.title}</ArticleTitle>
-            <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
-            <ArticleMain>{originalString}</ArticleMain>
-          </SectionMain>
-        </FieldMain>
-      </MainWrap>
-      <Footer />
+      <FieldMain data={data}>
+        <SectionTitle>ARTICLE</SectionTitle>
+        <SectionMain>
+          <ArticleProperty data={data}></ArticleProperty>
+          <ArticleTitle>{data.title}</ArticleTitle>
+          <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
+          <ArticleMain>{originalString}</ArticleMain>
+        </SectionMain>
+      </FieldMain>
     </>
   );
 }

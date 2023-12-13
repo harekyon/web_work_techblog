@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./CardUnit.module.scss";
 import { formatDateDot } from "@/libs/core";
 import { css } from "@emotion/react";
+import Link from "next/link";
 
 export default function CardUnit({
   id,
@@ -19,7 +20,7 @@ export default function CardUnit({
         transition-delay: ${delayAnimValue}ms;
       `}
     >
-      <a href={`./${id}`} className={styles["card-unit--flex-container"]}>
+      <Link href={`./${id}`} className={styles["card-unit--flex-container"]}>
         <date className={`${styles["card-unit__date"]} carddate`}>
           <span>{publishedAt}</span>
         </date>
@@ -33,7 +34,7 @@ export default function CardUnit({
           className={`${styles["card-unit__thumbnail"]} cardimage`}
         ></img>
         <div className={`${styles["card-unit__title"]} cardtitle`}>{title}</div>
-      </a>
+      </Link>
     </article>
   );
 }

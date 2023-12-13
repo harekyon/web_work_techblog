@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./MenuButton.module.scss";
 
 export default function MenuButton({ href = "#", children, ...props }) {
@@ -28,9 +29,9 @@ export default function MenuButton({ href = "#", children, ...props }) {
           </g>
         </svg>
       </div>
-      <a href={href} className={styles["menu-button__text"]}>
+      <Link href={href} className={styles["menu-button__text"]}>
         {children}
-      </a>
+      </Link>
     </li>
   );
 }

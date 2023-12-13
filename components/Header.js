@@ -10,7 +10,7 @@ let menuWebRef = null;
 let menuCgRef = null;
 let menuDesignRef = null;
 let menuRect = null;
-export default function Header({ title = "POKO", url = "/blogs" }) {
+export default function Header({ title = "POKO", url = "/" }) {
   useLayoutEffect(() => {
     menuWebRef = document.getElementById("menu-web");
     menuCgRef = document.getElementById("menu-cg");
@@ -56,7 +56,7 @@ export default function Header({ title = "POKO", url = "/blogs" }) {
         </div>
         <div className={styles["header__menu"]}>
           <Menu>
-            <MenuButton href="/blogs/about" id="menu-web">
+            <MenuButton href="/about" id="menu-web">
               ABOUT
             </MenuButton>
             {/* <MenuButton href="/blogs#tag=%22cg%22&page=1" id="menu-cg">

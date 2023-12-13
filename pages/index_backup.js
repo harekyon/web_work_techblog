@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "@/styles/Blogs.module.scss";
 
 // import { client } from "../libs/client";
-import { client } from "../../libs/client";
+import { client } from "../libs/client";
 
 import Header from "@/components/Header";
 import CardList from "@/components/atomic/CardList";
@@ -211,7 +211,7 @@ export default function Blogs({ blogs, categories, poppreset }) {
         title="HKTL - BLOG"
         description="ゆったりてっくぶろぐ"
         keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
-        url="https://harekyon.com/blogs/"
+        url="https://harekyon.com/"
       />
       <Header></Header>
       <MainWrap>

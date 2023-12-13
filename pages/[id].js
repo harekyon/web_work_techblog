@@ -5,7 +5,7 @@
 /*===================================*/
 
 import { useRouter } from "next/router";
-import { client } from "../../libs/client";
+import { client } from "../libs/client";
 import Header from "@/components/Header";
 import MainWrap from "@/components/atomic/MainWrap";
 import FieldMain from "@/components/atomic/FieldMain";
@@ -149,7 +149,7 @@ export default function BlogId({ data, poppreset }) {
         title={data.title}
         description={data.description}
         keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
-        url={`https://harekyon.com/blogs/${data.id}`}
+        url={`https://harekyon.com/${data.id}`}
       />
 
       <Header></Header>
@@ -173,7 +173,7 @@ export default function BlogId({ data, poppreset }) {
 export const getStaticPaths = async () => {
   const data = await client.get({ endpoint: "blogs" });
 
-  const paths = data.contents.map((content) => `/blogs/${content.id}`);
+  const paths = data.contents.map((content) => `/${content.id}`);
   return { paths, fallback: false };
 };
 

@@ -218,7 +218,7 @@ export default function Blogs({ blogs, categories, poppreset }) {
         ogTitleHead="HKTL"
         ogTitle="BLOG"
         ogDescription="ゆったりてっくぶろぐ"
-        ogUrl={`https://harekyon.com/blogs/`}
+        ogUrl={`https://harekyon.com/`}
       ></Meta>
       <title>{`HKTL - BLOG`}</title>
       {/* <Header title="UNIT" url="/unit"></Header> */}

@@ -1,232 +1,359 @@
-import styles from "@/styles/Home.module.scss";
-
-import { client } from "../libs/client";
-import Image from "next/image";
-import { LogoSvg } from "@/libs/assets";
-import { useEffect } from "react";
-import Cube from "@/components/atomic/Cube";
-import CubeWrap from "@/components/atomic/CubeWrap";
-import { css } from "@emotion/react";
-import GridWrap from "@/components/atomic/GridWrap";
-import Link from "next/link";
-import CubeArticle from "@/components/atomic/CubeArticle";
-import { convertDateStringToDate } from "@/libs/core";
-import { formatDateDot } from "@/libs/core";
-import Meta from "@/components/Meta";
 import HeadGroup from "@/components/Seo";
+import Image from "next/image";
+import styles from "@/styles/Blogs.module.scss";
+
+// import { client } from "../libs/client";
+import { client } from "../libs/client";
+
+import Header from "@/components/Header";
+import CardList from "@/components/atomic/CardList";
+import CardUnit from "@/components/atomic/CardUnit";
+import { convertDateStringToDate, formatDateDot, formatTag } from "@/libs/core";
+import Footer from "@/components/Footer";
+import MainWrap from "@/components/atomic/MainWrap";
+import FieldSide from "@/components/atomic/FieldSide";
+import SectionTitle from "@/components/atomic/SectionTitle";
+import SidePanelProfile from "@/components/atomic/SidePanelProfile";
+import { css } from "@emotion/react";
+import Breadcrumb from "@/components/atomic/Breadcrumb";
+import FieldMain from "@/components/atomic/FieldMain";
+import TagList from "@/components/atomic/TagList";
+import TagUnit from "@/components/atomic/TagUnit";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import Pagination from "@/components/atomic/Pagination";
+
+import { useAtom } from "jotai";
+import { atomWithHash } from "jotai-location";
+import { errorPop } from "@/libs/hp_assets";
+import BlogMainContent from "@/components/atomic/BlogMainContent";
+import Meta from "@/components/Meta";
 import Seo from "@/components/Seo";
+import { useRouter } from "next/router";
 
-const article = [
-  { title: "aaaaa", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
-  { title: "bbbbb", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
-  { title: "ccccc", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
-];
+// import { errorPop } from "@/libs/hp_assets";
 
-let value = 0;
-export default function Home({ blogs }) {
+const breadcrumb = [{ name: "HOME", href: "/" }];
+
+export default function Blogs({ blogs, categories }) {
+  const paginationPerPage = 3;
+  const sliceByNumber = (array, number) => {
+    const length = Math.ceil(array.length / number);
+    return new Array(length)
+      .fill()
+      .map((_, i) => array.slice(i * number, (i + 1) * number));
+  };
+  const router = useRouter();
+  const query = router.query;
+  //カテゴリーのリストを呼び出しておく
+  const categoryList = useRef(
+    categories.map((c) => {
+      return { id: c.id, name: c.name };
+    })
+  );
+
+  //出力される記事の状態をまとめる
+  const [resultArticleList, setResultArticleList] = useState(
+    sliceByNumber(blogs, paginationPerPage)
+  );
+  const cardunitDom = useRef();
+  const beforeCardUnitValue = useRef(0);
+  const articleNoneError = useRef(false);
+
   useEffect(() => {
-    const wheelFunc = (e) => {
-      // console.log(document.getElementById("main--wrap"));
-      // e.preventDefault();
-      if (document.getElementById("main--wrap") != null) {
-        value += e.deltaY * 2;
-        value = Math.min(
-          Math.max(0, value),
-          document.getElementById("main--wrap").scrollWidth
-        );
-        document.getElementById("main--wrap").scrollLeft = value;
+    if (router.isReady) {
+      if (Object.keys(query).length === 0) {
+        //   //初期値
+        router.replace({ query: { tag: "All", page: 1 } });
+      } else {
+        new Promise((resolve, reject) => {
+          checkKey(resolve, reject);
+        })
+          .then(() => {})
+          .catch(() => {
+            if (resultArticleList.length === 0) {
+              errorPop("<span>このカテゴリの記事はありません</span>");
+              new Promise((resolve) => {
+                sortBlogList(resolve, "All");
+              }).then(() => {
+                router.push({ query: { tag: "All", page: 1 } });
+              });
+              return;
+            } else if (resultArticleList.length < query.page) {
+              errorPop(
+                `<span>無効なパラメータです(${query.tag}カテゴリは${resultArticleList.length}が最大です)</span>`
+              );
+              router.replace({ query: { tag: query.tag, page: 1 } });
+            }
+            if (query.page !== undefined && query.page.match(/[^0-9]/)) {
+              errorPop(
+                "<span>無効なパラメータです(数字以外が使われている)</span>"
+              );
+              router.replace({ query: { tag: query.tag, page: 1 } });
+            }
+
+            let tagNameInvalid = true;
+            categoryList.current.map((c) => {
+              c.name.toLowerCase() === query.tag.toLowerCase() &&
+                (tagNameInvalid = false);
+            });
+            query.tag.toLowerCase() === "all" && (tagNameInvalid = false);
+            if (tagNameInvalid) {
+              errorPop(`<span>カテゴリ "${query.tag}" は存在しません</span>`);
+              router.replace({ query: { tag: "All", page: 1 } });
+            }
+          });
       }
-    };
-    document.body.addEventListener("wheel", wheelFunc);
-  }, []);
+      function checkKey(resolve, reject) {
+        let correctKeyResult = { tag: false, page: false };
+        const checkTargetKeyArray = ["tag", "page"];
+        Object.keys(query).map((key) => {
+          if (checkTargetKeyArray.includes(key)) {
+            correctKeyResult[key] = true;
+          }
+        });
+        let formatKeyBool = Object.values(correctKeyResult);
+        console.log(checkTargetKeyArray);
+        let invalidResult = false;
+        formatKeyBool.map((m) => {
+          if (m === false) {
+            errorPop("<span>無効なパラメータです</span>");
+            router.replace({ query: { tag: "All", page: 1 } });
+            invalidResult = true;
+            return;
+          }
+        });
+        invalidResult ? resolve() : reject();
+      }
+    }
+  }, [router, query]);
+
+  function sortBlogList(sortBlogListResolve, tagName) {
+    let sortedArticleListResult = [];
+    console.log(tagName);
+    switch (tagName) {
+      case "All":
+        sortedArticleListResult = blogs;
+        break;
+      default:
+        blogs.map((b) => {
+          if (b.category.name.includes(tagName)) {
+            sortedArticleListResult.push(b);
+          }
+        });
+        break;
+    }
+
+    setResultArticleList(
+      sliceByNumber(sortedArticleListResult, paginationPerPage)
+    );
+    sortBlogListResolve(
+      sliceByNumber(sortedArticleListResult, paginationPerPage)
+    );
+  }
+  // useEffect(() => {
+  //   // new Promise((resolve) => {
+  //   //   cardDisappearAnimation(resolve);
+  //   // }).then(() => {
+  //   //   cardAppearAnimation();
+  //   // });
+  //   cardAppearAnimation(resultArticleList);
+  // }, [router.query.tag, router.query.page]);
+
+  useEffect(() => {
+    // new Promise((resolve) => {
+    //   cardDisappearAnimation(resolve);
+    // }).then(() => {
+    //   cardAppearAnimation();
+    // });
+    console.log(
+      `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
+    );
+    cardAppearAnimation(resultArticleList);
+  }, [router.query.tag, router.query.page]);
+
+  function cardDisappearAnimation(resolve, reject) {
+    // console.log(Array.from(document.getElementsByClassName("cardunit")).length);
+    Array.from(document.getElementsByClassName("cardunit")).forEach(
+      (d, idx) => {
+        setTimeout(() => {
+          d.classList.remove("articleAppearAnimation");
+          if (
+            idx + 1 ===
+            Array.from(document.getElementsByClassName("cardunit")).length
+          ) {
+            setTimeout(() => {
+              resolve();
+            }, 150);
+          }
+        }, 80 * idx);
+      }
+    );
+    if (Array.from(document.getElementsByClassName("cardunit")).length === 0) {
+      resolve();
+    }
+  }
+  function cardAppearAnimation(result) {
+    cardunitDom.current = Array.from(
+      document.getElementsByClassName("cardunit")
+    );
+    Array.from(document.getElementsByClassName("cardunit")).forEach(
+      (c, idx) => {
+        setTimeout(() => {
+          c.classList.add("articleAppearAnimation");
+        }, 150 * idx);
+      }
+    );
+    beforeCardUnitValue.current = cardunitDom.current.length;
+    // console.log(resultArticleList.length);
+    let counter = 0;
+    blogs.map((b) => {
+      if (b.category.name.includes(result.tag)) {
+        ++counter;
+      }
+    });
+    if (!(counter > 0)) {
+      articleNoneError.current = true;
+    } else {
+      articleNoneError.current = false;
+    }
+    // console.log(articleNoneError.current);
+    // if (articleNoneError.current && resultArticleList.length === 0) {
+    //   errorPop("<span>記事は見つかりませんでした</span>");
+    // }
+  }
   return (
     <>
       <Seo
-        title="TOP"
-        description="くりえいしょん"
+        title="HKTL - BLOG"
+        description="ゆったりてっくぶろぐ"
         keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
         url="https://harekyon.com/"
       />
-      <title>{`HKDC`}</title>
-      <main className={styles["main"]}>
-        <div id="main--wrap" className={styles["main--wrap"]}>
-          <nav className={styles["nav--wrap"]}>
-            <div className={styles["nav__title"]}>
-              {/* <Image src="/logo.png" width="131" height="69"></Image> */}
-              <LogoSvg />
+      <Header></Header>
+      <MainWrap>
+        <FieldMain>
+          <SectionTitle>BLOG LIST</SectionTitle>
+          <BlogMainContent>
+            <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
+            <TagList>
+              <TagUnit
+                cardDisappearAnimation={cardDisappearAnimation}
+                cardAppearAnimation={cardAppearAnimation}
+                sortBlogList={sortBlogList}
+                setResultArticleList={setResultArticleList}
+                tag={router.query.tag}
+                router={router}
+                name="All"
+              >
+                All
+              </TagUnit>
+
+              {categoryList.current.map((c, idx) => {
+                // console.log(paramState.tag);
+                return (
+                  <TagUnit
+                    cardDisappearAnimation={cardDisappearAnimation}
+                    cardAppearAnimation={cardAppearAnimation}
+                    sortBlogList={sortBlogList}
+                    setResultArticleList={setResultArticleList}
+                    categoryList={categoryList}
+                    key={idx}
+                    tag={router.query.tag}
+                    router={router}
+                    name={c.name}
+                  >
+                    {c.name}
+                  </TagUnit>
+                );
+              })}
+            </TagList>
+
+            <div className={`${styles["main--card-list"]} `}>
+              <CardList>
+                {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
+                {/* <div
+                // css={css`
+                //   display: none;
+                // `}
+                > */}
+                {resultArticleList[router?.query?.page - 1]?.map((b, idx) => {
+                  if (b.thumbnail?.url) {
+                    return (
+                      <CardUnit
+                        key={idx}
+                        id={b.id}
+                        title={b.title}
+                        thumbnail={b.thumbnail.url}
+                        publishedAt={formatDateDot(
+                          convertDateStringToDate(b.createdAt)
+                        )}
+                        category={b.category?.name}
+                        delayAnimValue={idx}
+                      />
+                    );
+                  } else {
+                    console.log("else");
+                    return (
+                      <CardUnit
+                        key={idx}
+                        id={b.id}
+                        title={b.title}
+                        thumbnail={b.thumbnail?.url}
+                        publishedAt={formatDateDot(
+                          convertDateStringToDate(b.createdAt)
+                        )}
+                        category={b.category?.name}
+                        // cardunitTransitionDelayDiff={
+                        //   cardunitTransitionDelayDiff
+                        // }
+                        delayAnimValue={idx}
+                      />
+                    );
+                  }
+                })}
+                {/* </div> */}
+              </CardList>
             </div>
-            <ul className={styles["nav--menu"]}>
-              <li>
-                <a href="#" className="notactive">
-                  ABOUT ME
-                </a>
-              </li>
-              <li>
-                <a href="#" className="notactive">
-                  NEWS
-                </a>
-              </li>
-              <li>
-                <a href="#" className="notactive">
-                  WORKS
-                </a>
-              </li>
-              <li>
-                <Link href="/blogs">TECHBLOG</Link>
-              </li>
-              <li>
-                <a href="#" className="notactive">
-                  SPECIAL
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div className={styles["section1"]}>
-            <GridWrap
-              cssOverrides={css`
-                grid-template: 1fr 1fr 1fr / 1fr;
-                padding: 10px 0;
-                row-gap: 10px;
-              `}
-            >
-              <Cube
-                boxWidth="400px"
-                boxHeight="100%"
-                src="/sample1.png"
-                property1="WORK"
-                property2="2022.03"
-                title="PITAGORA BLOCK"
-                subTitle="FAB"
-              ></Cube>
-              <Cube
-                boxWidth="400px"
-                boxHeight="100%"
-                src="/sample2.png"
-                property1="WORK"
-                property2="2022.03"
-                title="CG WORKS"
-                subTitle="ART"
-              ></Cube>
-              <Cube
-                boxWidth="400px"
-                boxHeight="100%"
-                src="/sample3.png"
-                property1="WORK"
-                property2="2022.03"
-                title="CG WORKS"
-                subTitle="PRODUCT"
-              ></Cube>
-            </GridWrap>
+            <Pagination
+              resultArticleList={resultArticleList}
+              paginationPerPage={paginationPerPage}
+              cardDisappearAnimation={cardDisappearAnimation}
+              cardAppearAnimation={cardAppearAnimation}
+            ></Pagination>
+            <div className={styles["main--side"]}></div>
+          </BlogMainContent>
+        </FieldMain>
+        <FieldSide>
+          <SectionTitle>SIDE</SectionTitle>
+          <div
+            css={css`
+              width: 100%;
+              height: 100%;
+              padding: 0 10px 10px;
+              display: flex;
+              flex-direction: column;
+              row-gap: 10px;
+            `}
+          >
+            <SidePanelProfile></SidePanelProfile>
           </div>
-          <div className={styles["section1"]}>
-            <GridWrap
-              cssOverrides={css`
-                grid-template: 130px 130px 130px / 130px 130px;
-                padding: 10px 0;
-                row-gap: 20px;
-                column-gap: 20px;
-              `}
-            >
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1="FIELD"
-                property2="01"
-                title="Javascript"
-                subTitle="WEB"
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1="FIELD"
-                property2="02"
-                title="React.js"
-                subTitle="WEB"
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1="FIELD"
-                property2="03"
-                title="TOUCH DESIGNER"
-                subTitle="CREATIVE CODE"
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1="FIELD"
-                property2="04"
-                title="Processing"
-                subTitle="CREATIVE CODE"
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1="FIELD"
-                property2="05"
-                title="Fabrication"
-                subTitle="WEB"
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1="FIELD"
-                property2="06"
-                title="Blender"
-                subTitle="CG"
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1=""
-                property2=""
-                title="Published"
-                subTitle=""
-              ></Cube>
-              <Cube
-                boxWidth="100%"
-                boxHeight="100%"
-                property1=""
-                property2=""
-                title=""
-                subTitle=""
-              ></Cube>
-            </GridWrap>
-          </div>
-          <div className={styles["section1"]}>
-            <GridWrap
-              cssOverrides={css`
-                padding: 10px 0;
-                row-gap: 10px;
-              `}
-            >
-              <CubeArticle
-                boxWidth="400px"
-                boxHeight="100%"
-                src="/sample1.png"
-                property1="TECHBLOG"
-                property2={formatDateDot(
-                  convertDateStringToDate(blogs[0].publishedAt)
-                )}
-                title="NEW POST"
-                subTitle="BLOG"
-                articleTitle={blogs[0].title}
-                articleImgSrc={blogs[0].thumbnail.url}
-                articleAbs={blogs[0].abstract}
-              ></CubeArticle>
-            </GridWrap>
-          </div>
-        </div>
-      </main>
+        </FieldSide>
+      </MainWrap>
+      <Footer />
+      <div id="jsErrorPopWrap" class="errorPopWrap"></div>
     </>
   );
 }
 
 export const getStaticProps = async () => {
   const data = await client.get({ endpoint: "blogs" });
+  const categories = await client.get({ endpoint: "categories" });
+  const poppreset = await client.get({ endpoint: "poppreset" });
   return {
     props: {
       blogs: data.contents,
+      categories: categories.contents,
+      poppreset: poppreset.contents,
     },
   };
 };

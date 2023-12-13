@@ -29,6 +29,7 @@ import BlogMainContent from "@/components/atomic/BlogMainContent";
 import Meta from "@/components/Meta";
 import Seo from "@/components/Seo";
 import { useRouter } from "next/router";
+import NextNProgress from "nextjs-progressbar";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -229,118 +230,120 @@ export default function Blogs({ blogs, categories }) {
         keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
         url="https://harekyon.com/"
       />
-      <Header></Header>
-      <MainWrap>
-        <FieldMain>
-          <SectionTitle>BLOG LIST</SectionTitle>
-          <BlogMainContent>
-            <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
-            <TagList>
-              <TagUnit
-                cardDisappearAnimation={cardDisappearAnimation}
-                cardAppearAnimation={cardAppearAnimation}
-                sortBlogList={sortBlogList}
-                setResultArticleList={setResultArticleList}
-                tag={router.query.tag}
-                router={router}
-                name="All"
-              >
-                All
-              </TagUnit>
 
-              {categoryList.current.map((c, idx) => {
-                // console.log(paramState.tag);
-                return (
-                  <TagUnit
-                    cardDisappearAnimation={cardDisappearAnimation}
-                    cardAppearAnimation={cardAppearAnimation}
-                    sortBlogList={sortBlogList}
-                    setResultArticleList={setResultArticleList}
-                    categoryList={categoryList}
-                    key={idx}
-                    tag={router.query.tag}
-                    router={router}
-                    name={c.name}
-                  >
-                    {c.name}
-                  </TagUnit>
-                );
-              })}
-            </TagList>
+      <FieldMain>
+        <SectionTitle>BLOG LIST</SectionTitle>
+        <BlogMainContent>
+          <NextNProgress
+            color="#29D"
+            startPosition={0.3}
+            stopDelayMs={200}
+            height={3}
+            showOnShallow={true}
+          />
+          <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
+          <TagList>
+            <TagUnit
+              cardDisappearAnimation={cardDisappearAnimation}
+              cardAppearAnimation={cardAppearAnimation}
+              sortBlogList={sortBlogList}
+              setResultArticleList={setResultArticleList}
+              tag={router.query.tag}
+              router={router}
+              name="All"
+            >
+              All
+            </TagUnit>
 
-            <div className={`${styles["main--card-list"]} `}>
-              <CardList>
-                {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
-                {/* <div
+            {categoryList.current.map((c, idx) => {
+              // console.log(paramState.tag);
+              return (
+                <TagUnit
+                  cardDisappearAnimation={cardDisappearAnimation}
+                  cardAppearAnimation={cardAppearAnimation}
+                  sortBlogList={sortBlogList}
+                  setResultArticleList={setResultArticleList}
+                  categoryList={categoryList}
+                  key={idx}
+                  tag={router.query.tag}
+                  router={router}
+                  name={c.name}
+                >
+                  {c.name}
+                </TagUnit>
+              );
+            })}
+          </TagList>
+          <div className={`${styles["main--card-list"]} `}>
+            <CardList>
+              {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
+              {/* <div
                 // css={css`
                 //   display: none;
                 // `}
                 > */}
-                {resultArticleList[router?.query?.page - 1]?.map((b, idx) => {
-                  if (b.thumbnail?.url) {
-                    return (
-                      <CardUnit
-                        key={idx}
-                        id={b.id}
-                        title={b.title}
-                        thumbnail={b.thumbnail.url}
-                        publishedAt={formatDateDot(
-                          convertDateStringToDate(b.createdAt)
-                        )}
-                        category={b.category?.name}
-                        delayAnimValue={idx}
-                      />
-                    );
-                  } else {
-                    console.log("else");
-                    return (
-                      <CardUnit
-                        key={idx}
-                        id={b.id}
-                        title={b.title}
-                        thumbnail={b.thumbnail?.url}
-                        publishedAt={formatDateDot(
-                          convertDateStringToDate(b.createdAt)
-                        )}
-                        category={b.category?.name}
-                        // cardunitTransitionDelayDiff={
-                        //   cardunitTransitionDelayDiff
-                        // }
-                        delayAnimValue={idx}
-                      />
-                    );
-                  }
-                })}
-                {/* </div> */}
-              </CardList>
-            </div>
-            <Pagination
-              resultArticleList={resultArticleList}
-              paginationPerPage={paginationPerPage}
-              cardDisappearAnimation={cardDisappearAnimation}
-              cardAppearAnimation={cardAppearAnimation}
-            ></Pagination>
-            <div className={styles["main--side"]}></div>
-          </BlogMainContent>
-        </FieldMain>
-        <FieldSide>
-          <SectionTitle>SIDE</SectionTitle>
-          <div
-            css={css`
-              width: 100%;
-              height: 100%;
-              padding: 0 10px 10px;
-              display: flex;
-              flex-direction: column;
-              row-gap: 10px;
-            `}
-          >
-            <SidePanelProfile></SidePanelProfile>
+              {resultArticleList[router?.query?.page - 1]?.map((b, idx) => {
+                if (b.thumbnail?.url) {
+                  return (
+                    <CardUnit
+                      key={idx}
+                      id={b.id}
+                      title={b.title}
+                      thumbnail={b.thumbnail.url}
+                      publishedAt={formatDateDot(
+                        convertDateStringToDate(b.createdAt)
+                      )}
+                      category={b.category?.name}
+                      delayAnimValue={idx}
+                    />
+                  );
+                } else {
+                  console.log("else");
+                  return (
+                    <CardUnit
+                      key={idx}
+                      id={b.id}
+                      title={b.title}
+                      thumbnail={b.thumbnail?.url}
+                      publishedAt={formatDateDot(
+                        convertDateStringToDate(b.createdAt)
+                      )}
+                      category={b.category?.name}
+                      // cardunitTransitionDelayDiff={
+                      //   cardunitTransitionDelayDiff
+                      // }
+                      delayAnimValue={idx}
+                    />
+                  );
+                }
+              })}
+              {/* </div> */}
+            </CardList>
           </div>
-        </FieldSide>
-      </MainWrap>
-      <Footer />
-      <div id="jsErrorPopWrap" class="errorPopWrap"></div>
+          <Pagination
+            resultArticleList={resultArticleList}
+            paginationPerPage={paginationPerPage}
+            cardDisappearAnimation={cardDisappearAnimation}
+            cardAppearAnimation={cardAppearAnimation}
+          ></Pagination>
+          <div className={styles["main--side"]}></div>
+        </BlogMainContent>
+      </FieldMain>
+      <FieldSide>
+        <SectionTitle>SIDE</SectionTitle>
+        <div
+          css={css`
+            width: 100%;
+            height: 100%;
+            padding: 0 10px 10px;
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+          `}
+        >
+          <SidePanelProfile></SidePanelProfile>
+        </div>
+      </FieldSide>
     </>
   );
 }

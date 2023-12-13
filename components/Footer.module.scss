@@ -5,6 +5,10 @@
     height: 100px;
     background: #101929cc;
     @include flexCenter();
+    transform: translateY(100px);
+    transition: 1200ms;
+    transition-timing-function: cubic-bezier(0.65, 0, 0, 0.99);
+    opacity: 0;
   }
   &--wrap {
     width: 100%;

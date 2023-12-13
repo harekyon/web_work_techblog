@@ -1,9 +1,20 @@
+import { useEffect } from "react";
 import Footer from "../Footer";
 import Header from "../Header";
 import MainWrap from "../atomic/MainWrap";
 import styles from "./Layout.module.scss";
 
 export default function Layout({ children }) {
+  useEffect(() => {
+    const headerEle = document.querySelector("header");
+    const footerEle = document.querySelector("footer");
+    const mainEle = document.querySelector("main");
+
+    headerEle.classList.add(styles["anim-header"]);
+    footerEle.classList.add(styles["anim-footer"]);
+    mainEle.classList.add(styles["anim-main"]);
+    console.log(footerEle);
+  }, []);
   return (
     <>
       <Header />

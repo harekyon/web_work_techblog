@@ -27,10 +27,10 @@ export default function Document() {
         }}
       />
       <Head>
-        <link
+        {/* <link
           rel="stylesheet"
           href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"
-        />
+        /> */}
         <link rel="stylesheet" href="https://use.typekit.net/ewv3fqu.css" />
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />

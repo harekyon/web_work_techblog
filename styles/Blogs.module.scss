@@ -37,3 +37,25 @@
     display: none;
   }
 }
+
+.fieldMainWrapAnim {
+  animation: 3s cubic-bezier(0.19, 0.02, 0, 1) 0s 1 keyFieldMainWrapAnim;
+}
+@keyframes keyFieldMainWrapAnim {
+  0% {
+    background: rgba(44, 52, 68, 0.8);
+  }
+  100% {
+    background: rgba(16, 25, 41, 0.8);
+  }
+}
+.fieldMainWrapErrorAnim {
+  @keyframes keyFieldMainWrapErrorAnim {
+    0% {
+      background: rgba(68, 44, 44, 0.8);
+    }
+    100% {
+      background: rgba(16, 25, 41, 0.8);
+    }
+  }
+}

@@ -10,9 +10,9 @@ export default function Layout({ children }) {
     const footerEle = document.querySelector("footer");
     const mainEle = document.querySelector("main");
 
-    headerEle.classList.add(styles["anim-header"]);
-    footerEle.classList.add(styles["anim-footer"]);
-    mainEle.classList.add(styles["anim-main"]);
+    headerEle.classList.add("anim-header");
+    footerEle.classList.add("anim-footer");
+    mainEle.classList.add("anim-main");
     console.log(footerEle);
   }, []);
   return (

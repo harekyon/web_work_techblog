@@ -24,7 +24,9 @@ body {
     height: 100svh;
   }
 }
-
+#__next {
+  overflow: hidden;
+}
 html {
   background: #060612;
 }
@@ -228,5 +230,17 @@ a {
     }
   }
 }
-.textBgRed {
+
+//出現アニメーション
+.anim-header {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+}
+.anim-main {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+.anim-footer {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
 }

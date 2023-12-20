@@ -212,6 +212,12 @@ export default function Blogs({ blogs, categories }) {
   }, [router.query.tag, router.query.page]);
 
   function cardDisappearAnimation(resolve, reject) {
+    /**
+     * ページ遷移時のアニメーション(2/4)
+     * removeEventClick：このタイミングでクリックイベント削除関数を実行。
+     * ソート前のクリックイベントを削除したいため、
+     */
+    removeEventClick();
     // console.log(Array.from(document.getElementsByClassName("cardunit")).length);
     Array.from(document.getElementsByClassName("cardunit")).forEach(
       (d, idx) => {
@@ -235,6 +241,11 @@ export default function Blogs({ blogs, categories }) {
     }
   }
   function cardAppearAnimation(result) {
+    /**
+     * ページ遷移時のアニメーション(3/4)
+     * addEventClick：このタイミングでクリックイベント追加関数を実行
+     */
+    addEventClick();
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
     );
@@ -275,9 +286,49 @@ export default function Blogs({ blogs, categories }) {
     });
   }
 
+  /**
+   * ページ遷移時のアニメーション(4/4)
+   * このuseEffectでページ遷移時のアニメーションを実行
+   */
   useEffect(() => {
+    const mainElement = document.getElementsByTagName("main")[0];
+    mainElement.classList.remove("transition-anim");
+    mainElement.classList.add("anim-main");
     setIsMounted(true);
   }, []);
+  useEffect(() => {}, []);
+
+  /**
+   * ページ遷移時のアニメーション(1/3)
+   *  clickFunc：クリック時の処理
+   *  addEventClick：クリックイベントを追加
+   * removeEventClick：クリックイベントを削除
+   */
+  function clickFunc(e) {
+    const mainElement = document.getElementsByTagName("main")[0];
+    e.preventDefault();
+    console.log("start");
+    if (e.target.href !== undefined) {
+      mainElement.classList.add("transition-anim");
+      document.getElementsByTagName("main")[0].classList.remove("anim-main");
+      setTimeout(() => {
+        console.log("end");
+        router.push(e.target.href);
+      }, 500);
+    }
+  }
+  function addEventClick() {
+    const buttonElements = document.getElementsByTagName("a");
+    Array.from(buttonElements).map((b, idx) => {
+      b.addEventListener("click", clickFunc);
+    });
+  }
+  function removeEventClick() {
+    const buttonElements = document.getElementsByTagName("a");
+    Array.from(buttonElements).map((b, idx) => {
+      b.removeEventListener("click", clickFunc);
+    });
+  }
 
   return (
     <>

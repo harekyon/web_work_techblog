@@ -143,6 +143,11 @@ export default function BlogId({ data, poppreset }) {
       });
     }
   }, []);
+  useEffect(() => {
+    const mainElement = document.getElementsByTagName("main")[0];
+    mainElement.classList.remove("transition-anim");
+    mainElement.classList.add("anim-main");
+  }, []);
   return (
     <>
       <Seo

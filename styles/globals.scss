@@ -244,3 +244,8 @@ a {
   opacity: 1 !important;
   transform: translateY(0px) !important;
 }
+//ページ遷移時のアニメーション(5/5)
+.transition-anim {
+  transition-duration: 900ms !important;
+  transition-timing-function: cubic-bezier(0, 0.99, 0, 0.95) !important;
+}

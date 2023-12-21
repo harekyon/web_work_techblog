@@ -340,7 +340,7 @@ export default function Blogs({ blogs, categories }) {
 
       <FieldMain>
         <Window id="whatsnew">
-          <SectionTitle>WHAT'S NEW</SectionTitle>
+          <SectionTitle>WHAT&apos;S NEW</SectionTitle>
           <BlogMainContent>
             <NextNProgress
               color="#29D"

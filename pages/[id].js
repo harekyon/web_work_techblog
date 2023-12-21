@@ -24,6 +24,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import hljs from "highlight.js";
 import Seo from "@/components/Seo";
+import Breadcrumb from "@/components/atomic/Breadcrumb";
+import Window from "@/components/atomic/Window";
 
 const popPreset = {
   useEffect:
@@ -39,6 +41,11 @@ const getPresetKeyArray = (preset) => {
 };
 const popPresetKeyArray = getPresetKeyArray(popPreset);
 export default function BlogId({ data, poppreset }) {
+  console.log(data);
+  const breadcrumb = [
+    { name: "HOME", href: "/" },
+    { name: data.title, href: `/${data.id}` },
+  ];
   const [originalString, setOriginalString] = useState(data.content);
   const stringData = useRef("");
   const preChildArray = useRef([]);
@@ -156,14 +163,18 @@ export default function BlogId({ data, poppreset }) {
         keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
         url={`https://harekyon.com/${data.id}`}
       />
+
       <FieldMain data={data}>
-        <SectionTitle>ARTICLE</SectionTitle>
-        <SectionMain>
-          <ArticleProperty data={data}></ArticleProperty>
-          <ArticleTitle>{data.title}</ArticleTitle>
-          <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
-          <ArticleMain>{originalString}</ArticleMain>
-        </SectionMain>
+        <Window>
+          <SectionTitle>ARTICLE</SectionTitle>
+          <SectionMain>
+            <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
+            <ArticleProperty data={data}></ArticleProperty>
+            <ArticleTitle>{data.title}</ArticleTitle>
+            <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
+            <ArticleMain>{originalString}</ArticleMain>
+          </SectionMain>
+        </Window>
       </FieldMain>
     </>
   );

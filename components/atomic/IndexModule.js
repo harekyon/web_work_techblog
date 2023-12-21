@@ -3,25 +3,6 @@ import { useEffect, useState } from "react";
 export default function IndexModule() {
   const [heads, setHeads] = useState([]);
   useEffect(() => {
-    let tableOfContents = document.getElementById("tableOfContents");
-    const articleMainSide = document.getElementById("article-main--side");
-    window.addEventListener(
-      "scroll",
-      () => {
-        tableOfContents = document.getElementById("tableOfContents");
-        if (articleMainSide.getBoundingClientRect().top < 40) {
-          tableOfContents.style.position = "fixed";
-          tableOfContents.style.top = "40px";
-          tableOfContents.style.width = `${articleMainSide.clientWidth}px`;
-        } else if (40 < articleMainSide.getBoundingClientRect().top) {
-          tableOfContents.style.position = "unset";
-          tableOfContents.style.top = "unset";
-        }
-      },
-      true
-    );
-  });
-  useEffect(() => {
     setHeads(Array.from(document.querySelectorAll("h1,h2,h3")));
   }, []);
 

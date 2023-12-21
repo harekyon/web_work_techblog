@@ -15,6 +15,10 @@ export default function Pagination({
     nowPage.current = 1;
   }, [router.query.tag]);
 
+  useEffect(() => {
+    nowPage.current = router.query.page ? Number(router.query.page) : 1;
+  }, [router.query.page]);
+
   function queryFormatter(idx) {
     if (router.query.tag) {
       nowPage.current = idx + 1;
@@ -24,7 +28,6 @@ export default function Pagination({
       router.push({ query: { page: idx + 1 } });
     }
   }
-  useEffect(() => {}, []);
   return (
     <div className={styles["pagination--wrap"]}>
       {resultArticleList.map((p, idx) => {

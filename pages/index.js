@@ -30,6 +30,7 @@ import Meta from "@/components/Meta";
 import Seo from "@/components/Seo";
 import { useRouter } from "next/router";
 import NextNProgress from "nextjs-progressbar";
+import Window from "@/components/atomic/Window";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -161,7 +162,6 @@ export default function Blogs({ blogs, categories }) {
             return;
           }
         });
-        console.log(fieldMainWrapAnim);
         invalidResult ? resolve() : reject();
       }
     }
@@ -205,15 +205,25 @@ export default function Blogs({ blogs, categories }) {
     // }).then(() => {
     //   cardAppearAnimation();
     // });
+    const mainElement = document.getElementsByTagName("main")[0];
+    mainElement.classList.remove("transition-anim");
+    mainElement.classList.add("anim-main");
     console.log(
       `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
     );
-    cardAppearAnimation(resultArticleList);
+    new Promise((resolve) => {
+      console.log(router.query.tag);
+      if (router.query.tag !== undefined) {
+        sortBlogList(resolve, router.query.tag);
+      }
+    }).then(() => {
+      cardAppearAnimation(resultArticleList);
+    });
   }, [router.query.tag, router.query.page]);
 
   function cardDisappearAnimation(resolve, reject) {
     /**
-     * ページ遷移時のアニメーション(2/4)
+     * ページ遷移時のアニメーション(2/5)
      * removeEventClick：このタイミングでクリックイベント削除関数を実行。
      * ソート前のクリックイベントを削除したいため、
      */
@@ -227,8 +237,8 @@ export default function Blogs({ blogs, categories }) {
             idx + 1 ===
             Array.from(document.getElementsByClassName("cardunit")).length
           ) {
-            const fieldMainWrap = document.getElementById("fieldMainWrap");
-            fieldMainWrap.classList.remove(styles["fieldMainWrapAnim"]);
+            const whatsnew = document.getElementById("whatsnew");
+            whatsnew.classList.remove(styles["fieldMainWrapAnim"]);
             setTimeout(() => {
               resolve();
             }, 150);
@@ -242,7 +252,7 @@ export default function Blogs({ blogs, categories }) {
   }
   function cardAppearAnimation(result) {
     /**
-     * ページ遷移時のアニメーション(3/4)
+     * ページ遷移時のアニメーション(3/5)
      * addEventClick：このタイミングでクリックイベント追加関数を実行
      */
     addEventClick();
@@ -258,22 +268,13 @@ export default function Blogs({ blogs, categories }) {
             idx + 1 ===
             Array.from(document.getElementsByClassName("cardunit")).length
           ) {
-            const fieldMainWrap = document.getElementById("fieldMainWrap");
+            const whatsnew = document.getElementById("whatsnew");
             const jsErrorPopWrap = document.getElementById("jsErrorPopWrap");
             setTimeout(() => {
-              // if (articleNoneError.current) {
-              fieldMainWrap.classList.add(styles["fieldMainWrapAnim"]);
-              // if(jsErrorPopWrap.classList.contains("errorPopWrapAnim")){
-              //   jsErrorPopWrap.classList.remove("errorPopWrapAnim");
-              // }
-              // } else {
-              //   fieldMainWrap.classList.add(styles["fieldMainWrapAnim"]);
-              // }
+              whatsnew.classList.add(styles["fieldMainWrapAnim"]);
             }, 100);
-
-            console.log(fieldMainWrap);
           }
-        }, 150 * idx);
+        }, 100 * idx);
       }
     );
     beforeCardUnitValue.current = cardunitDom.current.length;
@@ -287,19 +288,17 @@ export default function Blogs({ blogs, categories }) {
   }
 
   /**
-   * ページ遷移時のアニメーション(4/4)
+   * ページ遷移時のアニメーション(4/5)
    * このuseEffectでページ遷移時のアニメーションを実行
+   * 5/5はglobal.scssの最後の方に記述
    */
   useEffect(() => {
-    const mainElement = document.getElementsByTagName("main")[0];
-    mainElement.classList.remove("transition-anim");
-    mainElement.classList.add("anim-main");
     setIsMounted(true);
   }, []);
   useEffect(() => {}, []);
 
   /**
-   * ページ遷移時のアニメーション(1/3)
+   * ページ遷移時のアニメーション(1/5)
    *  clickFunc：クリック時の処理
    *  addEventClick：クリックイベントを追加
    * removeEventClick：クリックイベントを削除
@@ -340,103 +339,139 @@ export default function Blogs({ blogs, categories }) {
       />
 
       <FieldMain>
-        <SectionTitle>BLOG LIST</SectionTitle>
-        <BlogMainContent>
-          <NextNProgress
-            color="#29D"
-            startPosition={0.3}
-            stopDelayMs={200}
-            height={3}
-            showOnShallow={true}
-          />
-          <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
-          <TagList>
-            <TagUnit
-              cardDisappearAnimation={cardDisappearAnimation}
-              cardAppearAnimation={cardAppearAnimation}
-              sortBlogList={sortBlogList}
-              setResultArticleList={setResultArticleList}
-              tag={router.query.tag}
-              router={router}
-              name="All"
-            >
-              All
-            </TagUnit>
+        <Window id="whatsnew">
+          <SectionTitle>WHAT'S NEW</SectionTitle>
+          <BlogMainContent>
+            <NextNProgress
+              color="#29D"
+              startPosition={0.3}
+              stopDelayMs={200}
+              height={3}
+              showOnShallow={true}
+            />
+            <Breadcrumb
+              cssOverrides={css`
+                margin: 0;
+                padding-left: 30px;
+              `}
+              breadcrumb={breadcrumb}
+            ></Breadcrumb>
+            <TagList>
+              <TagUnit
+                cardDisappearAnimation={cardDisappearAnimation}
+                cardAppearAnimation={cardAppearAnimation}
+                sortBlogList={sortBlogList}
+                setResultArticleList={setResultArticleList}
+                tag={router.query.tag}
+                router={router}
+                name="All"
+              >
+                All
+              </TagUnit>
 
-            {categoryList.current.map((c, idx) => {
-              // console.log(paramState.tag);
-              return (
-                <TagUnit
-                  cardDisappearAnimation={cardDisappearAnimation}
-                  cardAppearAnimation={cardAppearAnimation}
-                  sortBlogList={sortBlogList}
-                  setResultArticleList={setResultArticleList}
-                  categoryList={categoryList}
-                  key={idx}
-                  tag={router.query.tag}
-                  router={router}
-                  name={c.name}
-                >
-                  {c.name}
-                </TagUnit>
-              );
-            })}
-          </TagList>
-          <div className={`${styles["main--card-list"]} `}>
-            <CardList>
-              {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
-              {/* <div
+              {categoryList.current.map((c, idx) => {
+                // console.log(paramState.tag);
+                return (
+                  <TagUnit
+                    cardDisappearAnimation={cardDisappearAnimation}
+                    cardAppearAnimation={cardAppearAnimation}
+                    sortBlogList={sortBlogList}
+                    setResultArticleList={setResultArticleList}
+                    categoryList={categoryList}
+                    key={idx}
+                    tag={router.query.tag}
+                    router={router}
+                    name={c.name}
+                  >
+                    {c.name}
+                  </TagUnit>
+                );
+              })}
+            </TagList>
+            <div className={`${styles["main--card-list"]} `}>
+              <CardList>
+                {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
+                {/* <div
                 // css={css`
                 //   display: none;
                 // `}
                 > */}
-              {resultArticleList[router?.query?.page - 1]?.map((b, idx) => {
-                if (b.thumbnail?.url) {
-                  return (
-                    <CardUnit
-                      key={idx}
-                      id={b.id}
-                      title={b.title}
-                      thumbnail={b.thumbnail.url}
-                      publishedAt={formatDateDot(
-                        convertDateStringToDate(b.createdAt)
-                      )}
-                      category={b.category?.name}
-                      delayAnimValue={idx}
-                    />
-                  );
-                } else {
-                  console.log("else");
-                  return (
-                    <CardUnit
-                      key={idx}
-                      id={b.id}
-                      title={b.title}
-                      thumbnail={b.thumbnail?.url}
-                      publishedAt={formatDateDot(
-                        convertDateStringToDate(b.createdAt)
-                      )}
-                      category={b.category?.name}
-                      // cardunitTransitionDelayDiff={
-                      //   cardunitTransitionDelayDiff
-                      // }
-                      delayAnimValue={idx}
-                    />
-                  );
-                }
-              })}
-              {/* </div> */}
-            </CardList>
+                {resultArticleList[router?.query?.page - 1]?.map((b, idx) => {
+                  if (b.thumbnail?.url) {
+                    return (
+                      <CardUnit
+                        key={idx}
+                        id={b.id}
+                        title={b.title}
+                        thumbnail={b.thumbnail.url}
+                        publishedAt={formatDateDot(
+                          convertDateStringToDate(b.createdAt)
+                        )}
+                        category={b.category?.name}
+                        delayAnimValue={idx}
+                      />
+                    );
+                  } else {
+                    console.log("else");
+                    return (
+                      <CardUnit
+                        key={idx}
+                        id={b.id}
+                        title={b.title}
+                        thumbnail={b.thumbnail?.url}
+                        publishedAt={formatDateDot(
+                          convertDateStringToDate(b.createdAt)
+                        )}
+                        category={b.category?.name}
+                        // cardunitTransitionDelayDiff={
+                        //   cardunitTransitionDelayDiff
+                        // }
+                        delayAnimValue={idx}
+                      />
+                    );
+                  }
+                })}
+                {/* </div> */}
+              </CardList>
+            </div>
+            <Pagination
+              resultArticleList={resultArticleList}
+              paginationPerPage={paginationPerPage}
+              cardDisappearAnimation={cardDisappearAnimation}
+              cardAppearAnimation={cardAppearAnimation}
+            ></Pagination>
+            <div className={styles["main--side"]}></div>
+          </BlogMainContent>
+        </Window>
+        <Window>
+          <SectionTitle>THREEJS 研究所</SectionTitle>
+          <div
+            css={css`
+              width: 100%;
+              height: 300px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 10px;
+            `}
+          >
+            <div
+              css={css`
+                width: calc(100% - 20px);
+                height: calc(100% - 20px);
+                background: #00000e99;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              `}
+            >
+              COMMING SOON
+            </div>
           </div>
-          <Pagination
-            resultArticleList={resultArticleList}
-            paginationPerPage={paginationPerPage}
-            cardDisappearAnimation={cardDisappearAnimation}
-            cardAppearAnimation={cardAppearAnimation}
-          ></Pagination>
-          <div className={styles["main--side"]}></div>
-        </BlogMainContent>
+        </Window>
       </FieldMain>
+
       <FieldSide>
         <SectionTitle>SIDE</SectionTitle>
         <div

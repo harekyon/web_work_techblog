@@ -1,0 +1,12 @@
+@import "../../styles/_var";
+.window {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: rgba(16, 25, 41, 0.8);
+  margin-top: 20px;
+  &:first-child {
+    margin-top: 0;
+  }
+}

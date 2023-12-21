@@ -44,7 +44,7 @@ export default function BlogId({ data, poppreset }) {
   console.log(data);
   const breadcrumb = [
     { name: "HOME", href: "/" },
-    { name: data.title, href: `/${data.id}` },
+    { name: "ARTICLE", href: `/${data.id}` },
   ];
   const [originalString, setOriginalString] = useState(data.content);
   const stringData = useRef("");

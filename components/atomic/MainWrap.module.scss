@@ -3,8 +3,9 @@
 .main {
   &--wrap {
     width: 100%;
+
     max-width: 1200px;
-    min-height: calc(100vh - 200px);
+    min-height: 100vh;
     display: flex;
     margin: 0 auto;
     padding: 20px;

@@ -6,7 +6,7 @@ import SectionTitle from "@/components/atomic/SectionTitle";
 import SidePanelProfile from "@/components/atomic/SidePanelProfile";
 import Window from "@/components/atomic/Window";
 import { css } from "@emotion/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // import variable from "@/styles/_var.scss";
 import styles from "./ThreejsLayout.module.scss";
 import ThreejsSide from "./ThreejsSide";
@@ -19,6 +19,7 @@ const breadcrumb = [
 ];
 
 export default function ThreejsLayout({ children }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   useEffect(() => {
     const mainElement = document.getElementsByTagName("main")[0];
     mainElement.style.maxWidth = "100%";
@@ -34,7 +35,15 @@ export default function ThreejsLayout({ children }) {
   return (
     <>
       <title>THREE.JS</title>
-      <ThreejsSide />
+      <button
+        className={styles["spmenu"]}
+        onClick={() => {
+          isMenuOpen ? setIsMenuOpen(false) : setIsMenuOpen(true);
+        }}
+      >
+        M
+      </button>
+      <ThreejsSide isMenuOpen={isMenuOpen} />
       <FieldMain>
         <Window>
           <SectionTitle>BLOG LIST</SectionTitle>

@@ -1,5 +1,25 @@
 @import "/styles/_var.scss";
 
+.bar {
+  width: 20px;
+  height: calc(100% - 20px);
+  background: red;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  &-pos {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: blue;
+  }
+  &__tumb {
+    width: 10px;
+    height: 100px;
+    background: yellow;
+    position: absolute;
+  }
+}
 .threeSide {
   width: 400px;
   height: calc(100svh - 40px);
@@ -8,12 +28,7 @@
   top: 20px;
   left: 0;
   transition: 0.3s;
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+
   @include mq(sp) {
     position: fixed;
     left: 0;
@@ -24,6 +39,22 @@
     background: rgba(17, 33, 44, 1);
     width: 100%;
     height: 100svh;
+  }
+  &-inner {
+    width: 100%;
+    //エリアの高さ(100svh-40px)からさらにタイトルバーの高さ(20px)を引いて(100svh-60px)となる
+    height: calc(100svh - 60px);
+    padding: 0 18px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    position: relative;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   &-opacity {
     width: 100%;

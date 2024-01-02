@@ -14,6 +14,7 @@ import { css } from "@emotion/react";
 import { useEffect } from "react";
 // import variable from "@/styles/_var.scss";
 import styles from "./threejs.module.scss";
+import { useScrollbar } from "@/hooks/useScrollbar";
 
 const breadcrumb = [
   { name: "BLOG", href: "/" },
@@ -34,6 +35,7 @@ export default function Blogs() {
       mainElement.style.maxWidth = "1200px";
     };
   }, []);
+
   return (
     <>
       <title>THREE.JS</title>

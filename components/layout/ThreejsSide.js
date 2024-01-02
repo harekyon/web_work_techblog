@@ -2,41 +2,83 @@ import SectionTitle from "@/components/atomic/SectionTitle";
 import { css } from "@emotion/react";
 import styles from "./ThreejsSide.module.scss";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useScrollbar } from "@/hooks/useScrollbar";
 
 export default function ThreejsSide({ isMenuOpen = false, children }) {
-  console.log(useScrollbar());
-  // useEffect(() => {
-  //   if (
-  //     !modalContentsRef.current &&
-  //     !scrollbarRef.current &&
-  //     !modalHeaderRef.current &&
-  //     !scrollbarThumbRef.current &&
-  //     !modalContentBoxRef.current
-  //   )
-  //     return;
+  const modalContentsRef = useRef(undefined);
+  const scrollbarRef = useRef(undefined);
+  const scrollbarThumbRef = useRef(undefined);
+  console.log(useScrollbar({ wrapEle: "threeSide", childEle: "childEle" }));
+  useEffect(() => {
+    // const modalHeaderRef = document.getElementById("modalHeaderRef");
+    // if (
+    //   !modalContentsRef.current ||
+    //   !scrollbarRef.current ||
+    //   !modalHeaderRef.current ||
+    //   !scrollbarThumbRef.current
+    //   // &&
+    //   // !modalContentBoxRef.current
+    // )
+    //   return;
 
-  //   scrollbarRef.current.style.marginTop = `${modalHeaderRef.current.clientHeight}px`;
-  //   scrollbarRef.current.style.height = `${
-  //     modalContentsRef.current.clientHeight -
-  //     modalHeaderRef.current.clientHeight
-  //   }px`;
+    // console.log(modalHeaderRef);
 
-  //   const boxscrollHeight = modalContentBoxRef.current.scrollHeight;
-  //   const clientHeight =
-  //     modalContentsRef.current.clientHeight -
-  //     modalHeaderRef.current.clientHeight;
-  //   scrollbarThumbRef.current.style.height = `${
-  //     (clientHeight / boxscrollHeight) * clientHeight
-  //   }px`;
+    // scrollbarRef.current.style.marginTop = `${modalHeaderRef.clientHeight}px`;
+    // scrollbarRef.current.style.height = `${
+    //   modalContentsRef.current.clientHeight - modalHeaderRef.clientHeight
+    // }px`;
 
-  //   if (boxscrollHeight >= clientHeight) {
-  //     scrollbarThumbRef.current.style.opacity = 0.3;
-  //   } else {
-  //     scrollbarThumbRef.current.style.opacity = 0;
-  //   }
-  // }, [obj]);
+    const contentsWrapper = document.getElementById("contentsWrapper");
+    const barTumb = document.getElementById("barTumb");
+    const barWrapper = document.getElementById("barWrapper");
+    const scrollableHeight = contentsWrapper.scrollHeight;
+
+    // const boxscrollHeight = modalContentsRef.current.scrollHeight;
+    // const clientHeight =
+    //   modalContentsRef.current.clientHeight - modalHeaderRef.clientHeight;
+
+    const clientHeight = contentsWrapper.clientHeight;
+
+    barTumb.style.height = `${
+      (clientHeight / scrollableHeight) * clientHeight
+    }px`;
+
+    console.log(
+      `scrollableHeight:${scrollableHeight}, clientHeight:${clientHeight}`
+    );
+    if (scrollableHeight > clientHeight) {
+      scrollbarThumbRef.current.style.opacity = 0.3;
+      barWrapper.style.display = "block";
+    } else {
+      scrollbarThumbRef.current.style.opacity = 0;
+      barWrapper.style.display = "none";
+    }
+  }, []);
+
+  useEffect(() => {
+    const contentsWrapper = document.getElementById("contentsWrapper");
+    contentsWrapper.addEventListener("scroll", scrollFunc);
+  }, []);
+
+  function scrollFunc() {
+    // const bar = document.getElementById("barWrapper");
+    const thumb = document.getElementById("barTumb");
+
+    const A = document.getElementById("contentsWrapper").scrollHeight;
+    const B = document.getElementById("contentsWrapper").clientHeight;
+    const C = document.getElementById("contentsWrapper").scrollTop;
+    let D = null;
+    D = C / (A - B);
+    console.log(D);
+
+    // const thumbPosY = document.getElementById("modal").scrollHeight;
+
+    const movableHeight = B - thumb.clientHeight;
+    console.log(movableHeight);
+    thumb.style.top = `${D * movableHeight}px`;
+  }
+
   return (
     <>
       <div
@@ -46,319 +88,345 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
         `}
       >
         {/* <div className={styles["threeSide-opacity"]}></div> */}
+        <div id="barWrapper" className={styles["bar"]}>
+          <div className={styles["bar-pos"]} ref={scrollbarRef}>
+            <div
+              id="barTumb"
+              ref={scrollbarThumbRef}
+              className={styles["bar__tumb"]}
+            ></div>
+          </div>
+        </div>
         <div
+          ref={modalContentsRef}
           css={css`
             position: relative;
           `}
         >
-          <SectionTitle sticky={true}>THREEJS入門</SectionTitle>
+          <SectionTitle id={"modalHeaderRef"} sticky={true}>
+            THREEJS入門
+          </SectionTitle>
           <div
             css={css`
-              width: 100%;
               height: 100%;
-              padding: 0 18px 10px 10px;
-              display: flex;
-              flex-direction: column;
-              row-gap: 10px;
-              position: relative;
             `}
           >
-            <ul>
-              <li>
-                <Link href="/">
-                  <span className={styles["icon"]}>
-                    <span className={styles["icon-rect"]}></span>
-                  </span>
-                  <span className={styles["text"]}>REACTやNEXTで</span>
-                </Link>
-              </li>
+            <div id="contentsWrapper" className={styles["threeSide-inner"]}>
               <ul>
                 <li>
                   <Link href="/">
                     <span className={styles["icon"]}>
                       <span className={styles["icon-rect"]}></span>
                     </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
+                    <span className={styles["text"]}>REACTやNEXTで</span>
                   </Link>
                 </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
+                <ul>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                </ul>
               </ul>
-            </ul>
-            <ul>
-              <li>
-                <Link href="/">
-                  <span className={styles["icon"]}>
-                    <span className={styles["icon-rect"]}></span>
-                  </span>
-                  <span className={styles["text"]}>REACTやNEXTで</span>
-                </Link>
-              </li>
               <ul>
                 <li>
                   <Link href="/">
                     <span className={styles["icon"]}>
                       <span className={styles["icon-rect"]}></span>
                     </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
+                    <span className={styles["text"]}>REACTやNEXTで</span>
                   </Link>
                 </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <span className={styles["icon"]}>
-                      <span className={styles["icon-rect"]}></span>
-                    </span>
-                    <span className={styles["text"]}>REACTやNEXTでTHREEJS</span>
-                  </Link>
-                </li>
+                <ul>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      <span className={styles["icon"]}>
+                        <span className={styles["icon-rect"]}></span>
+                      </span>
+                      <span className={styles["text"]}>
+                        REACTやNEXTでTHREEJS
+                      </span>
+                    </Link>
+                  </li>
+                </ul>
               </ul>
-            </ul>
+            </div>
           </div>
         </div>
       </div>

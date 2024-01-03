@@ -50,7 +50,7 @@
     padding: 0 18px 10px 10px;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    // row-gap: 10px;
     position: relative;
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -76,7 +76,7 @@
       background: #69739392;
       transition: 0.1s;
       .icon {
-        background: rgb(188, 87, 175);
+        background: rgb(233, 231, 146);
         transition: 0.1s;
         &-rect {
           border: 1px solid #ffffff5b;
@@ -93,7 +93,7 @@
       display: inline-block;
       width: 10px;
       height: 10px;
-      background: rgb(122, 137, 224);
+      background: rgb(92, 101, 152);
       position: relative;
       margin-left: 10px;
       transition: 0.5s;
@@ -122,10 +122,17 @@
   }
 
   ul {
+    // display: flex;
+    // flex-direction: column;
+    // row-gap: 5px;
     margin-top: 0px;
     list-style: none;
+    row-gap: 0;
     &:first-child {
-      margin-top: 10px;
+      margin-top: 5px;
+    }
+    &:not(:first-child) {
+      margin-top: 5px;
     }
     &:last-child {
       padding-bottom: 20px;
@@ -133,8 +140,13 @@
     $border: 1px solid rgb(49, 56, 70);
     $leftPos: -6px;
     $gap: 5px;
+
     li {
       position: relative;
+      &:last-child {
+        margin-bottom: 10px;
+      }
+      // &:not(:first-child) {
       &::after {
         content: "";
         height: calc(50% + $gap);
@@ -145,6 +157,7 @@
         left: 14px;
         z-index: -1;
       }
+      // }
     }
     ul {
       display: flex;
@@ -183,6 +196,7 @@
           }
         }
         &:last-child {
+          margin-bottom: 5px;
           //最後の縦線
           &::after {
             content: "";
@@ -232,5 +246,18 @@
         }
       }
     }
+  }
+}
+.nodeco {
+  margin-bottom: 5px;
+  &::after {
+    content: unset !important;
+    height: unset !important;
+    border: unset !important;
+    background: unset !important;
+    position: unset !important;
+    top: unset !important;
+    left: unset !important;
+    z-index: unset !important;
   }
 }

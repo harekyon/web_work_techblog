@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import styles from "./threejs.module.scss";
 import Link from "next/link";
 import ThreejsLayout from "@/components/layout/ThreejsLayout";
-import { useScrollbar } from "@/hooks/useScrollbar";
 
 const breadcrumb = [
   { name: "BLOG", href: "/" },

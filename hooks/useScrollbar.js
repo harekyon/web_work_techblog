@@ -1,62 +1,60 @@
 import { useEffect, useRef } from "react";
-import styles from "./useScrollbar.module.scss";
+
 export function useScrollbar({
   contentsWrapper = "contentsWrapper",
   barTumb = "barTumb",
-  barWrapper = "barWrapper"
-  wrapEle,
-  childEle,
+  barWrapper = "barWrapper",
 }) {
-  const num = useRef(0);
-
-  useEffect(() => {
-    console.log(document.getElementById(wrapEle));
-    num.current += 1;
-  }, []);
-
   const contentsWrapperEle = useRef(undefined);
   const barTumbEle = useRef(undefined);
-  const barWrapper = useRef(undefined);
-
+  const barWrapperEle = useRef(undefined);
+  const adjust = 26;
+  const initBarWrapperPadding = useRef(null);
 
   useEffect(() => {
-    contentsWrapperEle.current = document.getElementById(contentsWrapper);
-    barTumbEle.current = document.getElementById("barTumb");
-    barWrapper.current = document.getElementById("barWrapper");
-    const scrollableHeight = contentsWrapperEle.scrollHeight;
+    initBarWrapperPadding.current = document.getElementById(contentsWrapper);
 
-    const clientHeight = contentsWrapperEle.clientHeight;
-
-    barTumbEle.current.style.height = `${
-      (clientHeight / scrollableHeight) * clientHeight
-    }px`;
-
-    if (scrollableHeight > clientHeight) {
-      scrollbarThumbRef.current.style.opacity = 0.3;
-      barWrapper.current.style.display = "block";
-    } else {
-      scrollbarThumbRef.current.style.opacity = 0;
-      barWrapper.style.display = "none";
-    }
+    resizeFunc();
+    window.addEventListener("resize", resizeFunc);
     contentsWrapperEle.current.addEventListener("scroll", scrollFunc);
   }, []);
+  function resizeFunc() {
+    console.log(initBarWrapperPadding.current.style.padding);
+    scrollFunc();
+    contentsWrapperEle.current = document.getElementById(contentsWrapper);
+    barTumbEle.current = document.getElementById(barTumb);
+    barWrapperEle.current = document.getElementById(barWrapper);
+    barWrapperEle.current.style.height = `calc(100% - ${adjust}px)`;
+    barWrapperEle.current.style.marginTop = adjust / 2 + "px";
+    barWrapperEle.current.style.marginBottom = adjust / 2 + "px";
+
+    const scrollableHeight = contentsWrapperEle.current.scrollHeight;
+    const clientHeight = contentsWrapperEle.current.clientHeight;
+    barTumbEle.current.style.height = `${
+      (clientHeight / scrollableHeight) * clientHeight - adjust
+    }px`;
+    if (scrollableHeight > clientHeight) {
+      barTumbEle.current.style.opacity = 0.3;
+      barWrapperEle.current.style.display = "flex";
+      contentsWrapperEle.current.style.padding = null;
+    } else {
+      barTumbEle.current.style.opacity = 0;
+      barWrapperEle.current.style.display = "none";
+      contentsWrapperEle.current.style.padding = "10px";
+    }
+  }
 
   function scrollFunc() {
-    // const bar = document.getElementById("barWrapper");
     const thumb = document.getElementById("barTumb");
 
     const A = document.getElementById(contentsWrapper).scrollHeight;
-    const B = document.getElementById(contentsWrapper).clientHeight;
+    const B =
+      document.getElementById(contentsWrapper).clientHeight - adjust / 2;
     const C = document.getElementById(contentsWrapper).scrollTop;
     let D = null;
     D = C / (A - B);
-    console.log(D);
-
-    // const thumbPosY = document.getElementById("modal").scrollHeight;
 
     const movableHeight = B - thumb.clientHeight;
-    console.log(movableHeight);
     thumb.style.top = `${D * movableHeight}px`;
   }
-  return num.current;
 }

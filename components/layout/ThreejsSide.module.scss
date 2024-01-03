@@ -3,17 +3,17 @@
 .bar {
   width: 17px;
   height: calc(100% - 20px);
-  // background: red;
   position: absolute;
   right: 0px;
   bottom: 0px;
+  display: flex;
+  justify-content: center;
   &-pos {
     width: 100%;
     height: 100%;
     position: relative;
     display: flex;
     justify-content: center;
-    // background: blue;
   }
   &__tumb {
     width: 6px;
@@ -38,7 +38,7 @@
     top: 0;
     /* overflow-y: scroll; */
     z-index: 1000;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
     background: rgba(17, 33, 44, 1);
     width: 100%;
     height: 100svh;
@@ -46,7 +46,7 @@
   &-inner {
     width: 100%;
     //エリアの高さ(100svh-40px)からさらにタイトルバーの高さ(20px)を引いて(100svh-60px)となる
-    height: calc(100svh - 60px);
+    height: calc(100svh - 20px);
     padding: 0 18px 10px 10px;
     display: flex;
     flex-direction: column;

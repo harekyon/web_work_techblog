@@ -36,12 +36,16 @@ export default function ThreejsLayout({ children }) {
     <>
       <title>THREE.JS</title>
       <button
-        className={styles["spmenu"]}
+        className={`${styles["spmenu"]}`}
         onClick={() => {
           isMenuOpen ? setIsMenuOpen(false) : setIsMenuOpen(true);
         }}
       >
-        M
+        <div
+          className={
+            isMenuOpen ? styles["spmenu-isopen"] : styles["spmenu-isclose"]
+          }
+        ></div>
       </button>
       <ThreejsSide isMenuOpen={isMenuOpen} />
       <FieldMain>

@@ -10,33 +10,13 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
   const scrollbarRef = useRef(undefined);
   const scrollbarThumbRef = useRef(undefined);
   console.log(useScrollbar({ wrapEle: "threeSide", childEle: "childEle" }));
+
+  //スクロールバーの高さを計算さん
   useEffect(() => {
-    // const modalHeaderRef = document.getElementById("modalHeaderRef");
-    // if (
-    //   !modalContentsRef.current ||
-    //   !scrollbarRef.current ||
-    //   !modalHeaderRef.current ||
-    //   !scrollbarThumbRef.current
-    //   // &&
-    //   // !modalContentBoxRef.current
-    // )
-    //   return;
-
-    // console.log(modalHeaderRef);
-
-    // scrollbarRef.current.style.marginTop = `${modalHeaderRef.clientHeight}px`;
-    // scrollbarRef.current.style.height = `${
-    //   modalContentsRef.current.clientHeight - modalHeaderRef.clientHeight
-    // }px`;
-
     const contentsWrapper = document.getElementById("contentsWrapper");
     const barTumb = document.getElementById("barTumb");
     const barWrapper = document.getElementById("barWrapper");
     const scrollableHeight = contentsWrapper.scrollHeight;
-
-    // const boxscrollHeight = modalContentsRef.current.scrollHeight;
-    // const clientHeight =
-    //   modalContentsRef.current.clientHeight - modalHeaderRef.clientHeight;
 
     const clientHeight = contentsWrapper.clientHeight;
 
@@ -44,9 +24,6 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
       (clientHeight / scrollableHeight) * clientHeight
     }px`;
 
-    console.log(
-      `scrollableHeight:${scrollableHeight}, clientHeight:${clientHeight}`
-    );
     if (scrollableHeight > clientHeight) {
       scrollbarThumbRef.current.style.opacity = 0.3;
       barWrapper.style.display = "block";
@@ -61,6 +38,7 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
     contentsWrapper.addEventListener("scroll", scrollFunc);
   }, []);
 
+  //スクロールバーの位置制御
   function scrollFunc() {
     // const bar = document.getElementById("barWrapper");
     const thumb = document.getElementById("barTumb");

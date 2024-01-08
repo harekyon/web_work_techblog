@@ -16,11 +16,16 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
 
   const articleList = [
     {
-      title: "COMMING SOON",
-      href: "/lib/threejs",
+      title: "THREEJSとは",
+      href: "/lib/threejs/overview",
+      childArticle: [
+        { title: "概要", href: "/lib/threejs/overview/overview" },
+        { title: "導入", href: "/lib/threejs/overview/startup" },
+        { title: "チュートリアル", href: "/lib/threejs/overview/tutoreal" },
+      ],
     },
     {
-      title: "COMMING SOON",
+      title: "ジオメトリ",
       href: "/lib/threejs/overview",
     },
     // {
@@ -95,6 +100,7 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
                             <span className={styles["icon-rect"]}></span>
                           </span>
                           <span className={styles["text"]}>
+                            {idx + " "}
                             {article.title}
                           </span>
                         </Link>
@@ -103,22 +109,26 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
                         if (article?.childArticle?.length > 0) {
                           return (
                             <ul>
-                              {article.childArticle.map((childArticle, idx) => {
-                                return (
-                                  <li key={idx}>
-                                    <Link href={childArticle.href}>
-                                      <span className={styles["icon"]}>
-                                        <span
-                                          className={styles["icon-rect"]}
-                                        ></span>
-                                      </span>
-                                      <span className={styles["text"]}>
-                                        {childArticle.title}
-                                      </span>
-                                    </Link>
-                                  </li>
-                                );
-                              })}
+                              {article.childArticle.map(
+                                (childArticle, childIdx) => {
+                                  return (
+                                    <li key={childIdx}>
+                                      <Link href={childArticle.href}>
+                                        <span className={styles["icon"]}>
+                                          <span
+                                            className={styles["icon-rect"]}
+                                          ></span>
+                                        </span>
+                                        <span className={styles["text"]}>
+                                          {idx + "."}
+                                          {childIdx + 1 + " "}
+                                          {childArticle.title}
+                                        </span>
+                                      </Link>
+                                    </li>
+                                  );
+                                }
+                              )}
                             </ul>
                           );
                         }

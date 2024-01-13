@@ -1,0 +1,42 @@
+@import "/styles/_var.scss";
+.spmenu {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: unset;
+  box-shadow: 0 0 10px 0 #fdffff33;
+  background: rgb(42, 52, 66);
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  @include mq(pc) {
+    display: none;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  div {
+    width: 30px;
+    height: 30px;
+    // background: rgb(155, 158, 160);
+    border-radius: 100%;
+    animation: 3s ease-in-out 0s infinite alternate none running animKey;
+    overflow: hidden;
+    transition: 0.5s;
+    transition-timing-function: ease-in-out;
+  }
+  // &-isopen {
+  //   box-shadow: 0 0 10px 0 rgb(37, 43, 52), inset 0px 0px 10px rgb(24, 28, 34);
+  // }
+  // &-isclose {
+  //   box-shadow: 0 0 10px 0 rgb(24, 28, 34), inset 0px 0px 10px rgb(42, 52, 66);
+  // }
+  &-isopen {
+    box-shadow: 0 0 10px 0 rgb(37, 43, 52), inset 0px 0px 10px rgb(24, 28, 34);
+  }
+  &-isclose {
+    box-shadow: 0 0 10px 0 rgb(24, 28, 34), inset 0px 0px 10px rgb(42, 52, 66);
+  }
+}

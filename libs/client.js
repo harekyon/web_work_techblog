@@ -5,8 +5,8 @@ export const client = createClient({
   apiKey: process.env.API_KEY,
 });
 
-//unitで使用するapiKey
-export const client_unit = createClient({
-  serviceDomain: process.env.UNIT_SERVICE_DOMAIN,
-  apiKey: process.env.UNIT_API_KEY,
-});
+// //unitで使用するapiKey
+// export const client_unit = createClient({
+//   serviceDomain: process.env.UNIT_SERVICE_DOMAIN,
+//   apiKey: process.env.UNIT_API_KEY,
+// });

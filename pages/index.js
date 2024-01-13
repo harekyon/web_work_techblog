@@ -31,6 +31,7 @@ import Seo from "@/components/Seo";
 import { useRouter } from "next/router";
 import NextNProgress from "nextjs-progressbar";
 import Window from "@/components/atomic/Window";
+import Link from "next/link";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -444,29 +445,22 @@ export default function Blogs({ blogs, categories }) {
           </BlogMainContent>
         </Window>
         <Window>
-          <SectionTitle>THREEJS 研究所</SectionTitle>
+          <SectionTitle>LIBコレクション</SectionTitle>
           <div
             css={css`
               width: 100%;
-              height: 300px;
               display: flex;
               align-items: center;
               justify-content: center;
-              padding: 10px;
+              padding: 20px;
             `}
           >
-            <div
-              css={css`
-                width: calc(100% - 20px);
-                height: calc(100% - 20px);
-                background: #00000e99;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              `}
-            >
-              COMMING SOON
+            <div className={styles["libcardlist"]}>
+              <div className={styles["libcard--wrap"]}>
+                <Link href="/lib/threejs">
+                  <img src="/lib/lib_threejs.png" />
+                </Link>
+              </div>
             </div>
           </div>
         </Window>

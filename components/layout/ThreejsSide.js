@@ -19,10 +19,10 @@ export default function ThreejsSide({ isMenuOpen = false, children }) {
       title: "COMMING SOON",
       href: "/lib/threejs",
     },
-    {
-      title: "COMMING SOON",
-      href: "/lib/threejs/overview",
-    },
+    // {
+    //   title: "COMMING SOON",
+    //   href: "/lib/threejs/overview",
+    // },
     // {
     //   title: "THREEJS",
     //   href: "/lib/threejs",

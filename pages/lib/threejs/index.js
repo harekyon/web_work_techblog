@@ -30,67 +30,7 @@ export default function Blogs() {
       <title>THREE.JS</title>
       <ThreejsLayout>
         <ArticleMain info={false}>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
-          <p>aaa</p>
+          <p>COMMING SOON</p>
         </ArticleMain>
       </ThreejsLayout>
     </>
